@@ -1,7 +1,7 @@
 export const state = () => ({
   status: 'ok',
   themes: {
-    colors: ['red', 'blue', 'green', 'orange'],
+    colors: ['red', 'blue', 'green', 'orange', 'yellow'],
     current: 'red',
   },
   language: {
