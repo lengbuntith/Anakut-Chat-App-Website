@@ -3,10 +3,10 @@
     <van-nav-bar
       title="Chat App"
       @click-left="onClickLeft"
-      @click-right="onClickRight"
+      @click-right="$store.dispatch('goTo', '/settings')"
     >
       <template #left>
-        <van-search v-model="value" shape="round" placeholder="Placeholder" />
+        <van-search shape="round" placeholder="Placeholder" />
       </template>
 
       <template #right>
