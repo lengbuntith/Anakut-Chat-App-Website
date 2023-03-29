@@ -6,8 +6,47 @@
       height="100vh"
     >
       <template #content>
-        <!-- chat settings -->
+        <!-- edit profile -->
         <div v-if="active == 0">
+          <van-cell>
+            <h4 style="text-transform: capitalize">Edit Profile</h4>
+            <div style="display: flex; justify-content: center">
+              <van-uploader :after-read="afterRead" />
+            </div>
+
+            <van-form @submit="updateProfile">
+              <van-field
+                v-model="profile.name"
+                name="Name"
+                label="Name"
+                placeholder="Name"
+                :rules="[{ required: true, message: 'Name is required' }]"
+              />
+              <van-field
+                v-model="profile.email"
+                name="Email"
+                label="Email"
+                placeholder="Email"
+                readonly
+              />
+              <van-field
+                v-model="profile.phone"
+                name="Phone"
+                label="Phone"
+                placeholder="Phone"
+                readonly
+              />
+              <div style="margin: 16px">
+                <van-button round block type="info" native-type="submit">
+                  Update Profile
+                </van-button>
+              </div>
+            </van-form>
+          </van-cell>
+        </div>
+
+        <!-- chat settings -->
+        <div v-if="active == 1">
           <van-cell>
             <h4 style="text-transform: capitalize">Themes</h4>
             <div class="flex">
@@ -29,7 +68,7 @@
         </div>
 
         <!-- language -->
-        <div v-if="active == 1">
+        <div v-if="active == 2">
           <van-cell>
             <h4 style="text-transform: capitalize">Select Language</h4>
             <div class="flex">
@@ -41,8 +80,18 @@
                 }`"
                 @click="$store.commit('SET_LANGUAGE', l)"
               >
-                {{ l }}
+                <img :src="`/images/lang/${l}.png`" :alt="l" />
               </div>
+            </div>
+          </van-cell>
+        </div>
+
+        <!-- block users -->
+        <div v-if="active == 3">
+          <van-cell>
+            <h4 style="text-transform: capitalize">Blocked Users</h4>
+            <div class="flex">
+              <div></div>
             </div>
           </van-cell>
         </div>
@@ -57,13 +106,24 @@ export default {
     return {
       items: [
         {
+          text: 'Edit Profile',
+        },
+        {
           text: 'Chat Settings',
         },
         {
           text: 'Language',
         },
+        {
+          text: 'Blocked Users',
+        },
       ],
       active: 0,
+      profile: {
+        name: '',
+        email: '',
+        phone: '',
+      },
     }
   },
 
@@ -74,6 +134,16 @@ export default {
 
     language() {
       return this.$store.state.language
+    },
+  },
+
+  methods: {
+    afterRead(file) {
+      console.log(file)
+    },
+
+    updateProfile() {
+      console.log('update profile')
     },
   },
 }
