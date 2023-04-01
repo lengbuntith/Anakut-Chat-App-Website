@@ -21,6 +21,7 @@
     >
       <template #content>
         <div v-if="active == 0">
+          <div>hello</div>
           <div style="padding: 20px">
             <div
               v-for="(c, i) in items[active].chat"
@@ -47,7 +48,23 @@
           </div>
         </div>
 
-        <div v-if="active == 1"></div>
+        <div v-if="active == 1">
+          <h1>Welcome to the Socket.io Chat App!</h1>
+          <div id="messages">
+            <div v-for="(m, i) in currentMessage" :key="i">
+              {{ m }}
+            </div>
+          </div>
+          <form @submit.prevent="sendMessage">
+            <input
+              type="text"
+              id="message-input"
+              placeholder="Type your message..."
+              v-model="newMessage"
+            />
+            <button type="submit">Send</button>
+          </form>
+        </div>
       </template>
     </van-tree-select>
   </div>
@@ -78,7 +95,23 @@ export default {
       ],
       active: 0,
       currentUser: 'tith',
+      newMessage: '',
+      currentMessage: [],
     }
+  },
+
+  mounted() {
+    this.$socket.on('message', (msg) => {
+      console.log(msg)
+      this.currentMessage = msg
+    })
+  },
+
+  methods: {
+    sendMessage() {
+      this.$socket.emit('message', this.newMessage)
+      this.newMessage = ''
+    },
   },
 }
 </script>
